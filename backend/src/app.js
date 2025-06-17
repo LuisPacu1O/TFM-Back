@@ -17,10 +17,10 @@ app.use(cors({
     origin: process.env.CLIENT_ORIGIN,
     credentials: true
 })); 
-app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 app.use(mongoSanitize());
+app.set('trust proxy', 1)
 
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, 
@@ -28,6 +28,7 @@ const apiLimiter = rateLimit({
     message: 'Demasiadas peticiones desde esta IP'
 });
 
+app.use(express.json());
 
 app.use('/', apiLimiter);
   
