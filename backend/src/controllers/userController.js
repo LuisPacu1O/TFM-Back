@@ -22,8 +22,7 @@ const userController = {
           maxAge: 24 * 60 * 60 * 1000,
         });
         response.json({
-          message: "Usuario logeado correctamente",
-          token: token,
+          message: "Usuario logeado correctamente"
         });
       } catch (error) {
         console.log("Error al hacer login", error);
@@ -45,7 +44,7 @@ const userController = {
         });
         response
           .status(201)
-          .json({ message: "Usuario registrado correctamente", token: token });
+          .json({ message: "Usuario registrado correctamente" });
       } catch (error) {
         console.log("Error al registrar al usuario", error);
         response.status(400).json({ message: error.message });
