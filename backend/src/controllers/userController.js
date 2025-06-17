@@ -15,9 +15,7 @@ const userController = {
         const { email, password } = request.body;
 
         const token = await loginUser(email, password);
-        response.cookie("token", token, {
-          maxAge: 24 * 60 * 60 * 1000,
-        });
+        response.cookie("token", token);
         response.json({
           message: "Usuario logeado correctamente"
         });
@@ -33,9 +31,7 @@ const userController = {
       try {
         const { email, password, name, role } = request.body;
         const token = await registerUser(email, password, name, role);
-        response.cookie("token", token, {
-          maxAge: 24 * 60 * 60 * 1000,
-        });
+        response.cookie("token", token);
         response
           .status(201)
           .json({ message: "Usuario registrado correctamente" });
