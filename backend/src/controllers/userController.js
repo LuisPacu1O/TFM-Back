@@ -15,7 +15,12 @@ const userController = {
         const { email, password } = request.body;
 
         const token = await loginUser(email, password);
-        response.cookie("token", token);
+        response.cookie("token", token, {
+          httpOnly: false,
+          secure: true,
+          sameSite: "none",
+          maxAge: 24 * 60 * 60 * 1000,
+        });
         response.json({
           message: "Usuario logeado correctamente"
         });
@@ -31,7 +36,12 @@ const userController = {
       try {
         const { email, password, name, role } = request.body;
         const token = await registerUser(email, password, name, role);
-        response.cookie("token", token);
+        response.cookie("token", token, {
+          httpOnly: false,
+          secure: true,
+          sameSite: "none",
+          maxAge: 24 * 60 * 60 * 1000,
+        });
         response
           .status(201)
           .json({ message: "Usuario registrado correctamente" });
@@ -62,6 +72,9 @@ const userController = {
   logout: [
     (request, response) => {
       response.cookie("token", "", {
+        httpOnly: false,
+        sameSite: "none",
+        secure: true,
         expires: new Date(0),
       });
       return response.status(200).json({ message: "Logout successful" });
