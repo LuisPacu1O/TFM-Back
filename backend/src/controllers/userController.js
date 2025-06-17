@@ -15,14 +15,9 @@ const userController = {
         const { email, password } = request.body;
 
         const token = await loginUser(email, password);
-        response.cookie("token", token, {
-          httpOnly: false,
-          secure: true,
-          sameSite: "none",
-          maxAge: 24 * 60 * 60 * 1000,
-        });
         response.json({
-          message: "Usuario logeado correctamente"
+          message: "Usuario logeado correctamente",
+          token,
         });
       } catch (error) {
         console.log("Error al hacer login", error);
@@ -36,15 +31,9 @@ const userController = {
       try {
         const { email, password, name, role } = request.body;
         const token = await registerUser(email, password, name, role);
-        response.cookie("token", token, {
-          httpOnly: false,
-          secure: true,
-          sameSite: "none",
-          maxAge: 24 * 60 * 60 * 1000,
-        });
         response
           .status(201)
-          .json({ message: "Usuario registrado correctamente" });
+          .json({ message: "Usuario registrado correctamente", token });
       } catch (error) {
         console.log("Error al registrar al usuario", error);
         response.status(400).json({ message: error.message });
@@ -71,18 +60,16 @@ const userController = {
   ],
   logout: [
     (request, response) => {
-      response.cookie("token", "", {
-        httpOnly: false,
-        sameSite: "none",
-        secure: true,
-        expires: new Date(0),
-      });
       return response.status(200).json({ message: "Logout successful" });
     },
   ],
   verify: [
     async (request, response) => {
-      const { token } = request.cookies;
+      const authHeader = request.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return response.status(401).json({ message: "No autorizado" });
+      }
+      const token = authHeader.split(" ")[1];
       if (!token)
         return response
           .status(401)
