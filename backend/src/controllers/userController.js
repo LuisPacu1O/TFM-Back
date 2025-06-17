@@ -39,6 +39,7 @@ const userController = {
         const token = await registerUser(email, password, name, role);
         response.cookie("token", token, {
           httpOnly: true,
+          secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
         });
@@ -74,6 +75,7 @@ const userController = {
       response.cookie("token", "", {
         httpOnly: true,
         sameSite: "none",
+        secure: true,
         expires: new Date(0),
       });
       return response.status(200).json({ message: "Logout successful" });
