@@ -61,12 +61,12 @@ const userController = {
     verify: [
         async (request, response) => {
             const {token} = request.cookies
-            if(!token) return response.status(401).json({message: 'No autorizado'})
+            if(!token) return response.status(401).json({message: 'No autorizado (fallo en cookies)'})
             jwt.verify(token, process.env.JWT_SECRET, async (error, user)=> {
-                if(error) return response.status(401).json({ message: 'No autorizado' });
+                if(error) return response.status(401).json({ message: 'No autorizado (fallo verificando)' });
 
                 const userFound = await User.findById(user.id);
-                if(!userFound) return response.status(401).json({ message: 'No autorizado' });
+                if(!userFound) return response.status(401).json({ message: 'No autorizado (no se encontró el usuario)' });
 
                 return response.json({ id: userFound._id, username: userFound.name, email: userFound.email, avatar: userFound.avatar});
             })
