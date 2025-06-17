@@ -28,11 +28,16 @@ const apiLimiter = rateLimit({
     message: 'Demasiadas peticiones desde esta IP'
 });
 
+app.use('/', apiLimiter);
+
 app.use(express.json());
 
-app.use('/', apiLimiter);
+app.get('/', (req, res) => {
+  res.send('API funcionando correctamente');
+});
+
   
-app.use('/api/', userRoutes);
+app.use('/api', userRoutes);
 app.use('/api/usergames', userGamesRoutes);
 
 app.get('api/admin/data', authMiddleware, adminMiddleware, (req, res) => {
