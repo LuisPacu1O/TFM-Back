@@ -1,11 +1,11 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const userRoutes = require('./routes/userRoutes');
-const userGamesRoutes = require('./routes/userGameRoutes');
+const userRoutes = require('./src/routes/userRoutes');
+const userGamesRoutes = require('./src/routes/userGameRoutes');
 
-const errorHandler = require('./middlewares/errorHandler');
-const {authMiddleware, adminMiddleware} = require('./middlewares/auth');
-const notFoundHandler = require('./middlewares/notFoundHandler');
+const errorHandler = require('./src/middlewares/errorHandler');
+const {authMiddleware, adminMiddleware} = require('./src/middlewares/auth');
+const notFoundHandler = require('./src/middlewares/notFoundHandler');
 
 const cors = require('cors');
 const helmet = require('helmet');
